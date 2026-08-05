@@ -11,10 +11,12 @@ import { BookService } from './book/book.service';
 import { ClassListService } from './class_list/class_list.service';
 import { ProgramsService } from './programs/programs.service';
 import { ScheduleService } from './schedule/schedule.service';
+import { ContactController } from './contact/contact.controller';
+import { ContactService } from './contact/contact.service';
 
 @Module({
   imports: [],
-  controllers: [AppController, ClassListController, ScheduleController, ProgramsController, AboutController, BookController],
-  providers: [AppService, AboutService, BookService, ClassListService, ProgramsService, ScheduleService],
+  controllers: [AppController, ClassListController, ScheduleController, ProgramsController, AboutController, BookController, ContactController],
+  providers: [AppService, AboutService, BookService, ClassListService, ProgramsService, ScheduleService, ContactService],
 })
 export class AppModule {}
