@@ -1,13 +1,13 @@
 import { Controller, Body, Post } from '@nestjs/common';
 import { ContactService } from './contact.service';
-import * as contactTypes from '../types/contactTypes';
+import { SaveUserMessageDto } from './save-user-message.dto';
 
 @Controller('contact')
 export class ContactController {
-    constructor(private readonly contactService: ContactService) {}
-  
+  constructor(private readonly contactService: ContactService) {}
+
   @Post()
-  saveUserMessage(@Body() body: contactTypes.TUserMessage) {
-    return this.contactService.saveUserMessage(body)
+  saveUserMessage(@Body() body: SaveUserMessageDto) {
+    return this.contactService.saveUserMessage(body);
   }
 }
