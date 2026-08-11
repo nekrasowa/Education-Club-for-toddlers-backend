@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MinLength } from 'class-validator';
 
 export class SaveUserMessageDto {
   @IsNotEmpty({message: 'Name can`t be empty'})
@@ -11,8 +11,9 @@ export class SaveUserMessageDto {
 
   @IsEmail({}, {message: 'Add your email'})
   email!: string;
-
-  @IsPhoneNumber(undefined, {message: 'Add your phone number'})
+  
+  @IsOptional()
+  @IsPhoneNumber()
   phone_number?: string;
   
   @IsNotEmpty({message: 'Can`t be empty'})

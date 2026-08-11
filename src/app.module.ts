@@ -7,7 +7,7 @@ import { ContactModule } from './contact/contact.module';
 import { Module } from '@nestjs/common';
 import { ProgramsModule } from './programs/programs.module';
 import { ScheduleModule } from './schedule/schedule.module';
-
+import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     AboutModule,
@@ -16,6 +16,16 @@ import { ScheduleModule } from './schedule/schedule.module';
     ContactModule,
     ProgramsModule,
     ScheduleModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'liudmyla',
+      password: 'childrenforus',
+      database: 'childreneducation',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

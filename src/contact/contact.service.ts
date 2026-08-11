@@ -1,19 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { SaveUserMessageDto } from './save-user-message.dto';
 import { TUserMessage } from '../types/contactTypes';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserMessage } from './user_message.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ContactService {
-  private usersMessages: TUserMessage[] = [];
+  constructor(
+    @InjectRepository(UserMessage)
+    private userMessagesRepository: Repository<UserMessage>,
+  ) {}
 
   saveUserMessage(body: SaveUserMessageDto) {
-    this.usersMessages.push({
-      first_name: body.first_name,
-      last_name: body.last_name,
-      email: body.email,
-      phone_number: body.phone_number || 'no phone number',
-      message_text: body.message_text,
+    const first_name = body.first_name;
+    const last_name = body.last_name;
+    const email = body.email;
+    const phone_number = body.phone_number;
+    const message_text = body.message_text;
+
+    const userMessage = this.userMessagesRepository.create({
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      message_text,
     });
-    return this.usersMessages;
+
+    return this.userMessagesRepository.save(userMessage);
   }
 }
