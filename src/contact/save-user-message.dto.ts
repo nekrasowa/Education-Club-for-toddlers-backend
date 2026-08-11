@@ -12,7 +12,7 @@ export class SaveUserMessageDto {
   @IsEmail({}, {message: 'Add your email'})
   email!: string;
 
-  @IsPhoneNumber(undefined, {message: 'Add your зрщту тгьиук'})
+  @IsPhoneNumber(undefined, {message: 'Add your phone number'})
   phone_number?: string;
   
   @IsNotEmpty({message: 'Can`t be empty'})
