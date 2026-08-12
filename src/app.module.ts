@@ -8,6 +8,7 @@ import { Module } from '@nestjs/common';
 import { ProgramsModule } from './programs/programs.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TutorsModule } from './tutors/tutors.module';
 @Module({
   imports: [
     AboutModule,
@@ -26,6 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    TutorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

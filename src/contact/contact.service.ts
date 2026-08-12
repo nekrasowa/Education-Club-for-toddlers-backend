@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { SaveUserMessageDto } from './save-user-message.dto';
-import { TUserMessage } from '../types/contactTypes';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserMessage } from './user_message.entity';
 import { Repository } from 'typeorm';
