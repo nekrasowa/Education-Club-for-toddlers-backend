@@ -21,6 +21,11 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
+  // убрать после проверок
+  async getUserList() {
+    return await this.userRepository.find();
+  }
+
   async login(body: LoginDto) {
     const user = await this.userRepository.findOne({
       where: {
@@ -29,6 +34,11 @@ export class AuthService {
     });
 
     if (!user) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+    const isPasswordValid = await bcrypt.compare(body.password, user.password);
+
+    if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
@@ -66,11 +76,9 @@ export class AuthService {
 
     const payload = {
       sub: savedUser.id,
-      email: savedUser.email,
       role: savedUser.role
     };
-
-    const accessToken = this.jwtService.sign(payload);
+    const access_token = this.jwtService.sign(payload);
 
     return {
       user: {
@@ -80,7 +88,7 @@ export class AuthService {
         first_name: savedUser.first_name,
         last_name: savedUser.last_name
       },
-      accessToken
+      access_token
     };
   }
 }
