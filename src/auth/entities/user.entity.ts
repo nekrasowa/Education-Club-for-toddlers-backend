@@ -14,7 +14,13 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
+    enum: UserRole
   })
   role!: UserRole;
+
+  @Column()
+  first_name!: string;
+
+  @Column()
+  last_name!: string;
 }

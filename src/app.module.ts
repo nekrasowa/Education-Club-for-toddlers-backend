@@ -13,6 +13,9 @@ import { TutorsModule } from './tutors/tutors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     AboutModule,
     BookModule,
     ClassListModule,
@@ -24,18 +27,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       host: 'localhost',
       port: 5432,
       username: 'liudmyla',
-      password: 'childrenforus',
+      password: process.env.DB_PASSWORD,
       database: 'childreneducation',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true
     }),
     TutorsModule,
-    AuthModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

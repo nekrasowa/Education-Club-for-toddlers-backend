@@ -19,7 +19,9 @@ import { RolesGuard } from '../guards/roles.guard';
 @Controller('tutors')
 export class TutorsController {
   constructor(private readonly tutorsService: TutorsService) {}
-
+  
+  @Roles('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   create(@Body() createTutorDto: CreateTutorDto) {
     return this.tutorsService.createNewTutor(createTutorDto);
