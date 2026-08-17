@@ -12,12 +12,19 @@ import { RegisterDto } from './dto/register.dto';
 import { UserRole } from '../enums/user-role.enum';
 import * as bcrypt from 'bcrypt';
 import { ForgotPassDto } from './dto/forgotPass.dto';
-
+import { MailService } from '../mail/mail.service';
+import { createHash, randomBytes } from 'crypto';
+import { PasswordResetToken } from './entities/reset-token.entity';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @InjectRepository(PasswordResetToken)
+    private readonly passwordResetTokenRepository: Repository<PasswordResetToken>,
+
+    private readonly mailService: MailService,
 
     private readonly jwtService: JwtService
   ) {}
@@ -94,17 +101,32 @@ export class AuthService {
     };
   }
 
-  async updatePassword(body: ForgotPassDto) {
+  async forgotPassword(body: ForgotPassDto) {
     const user = await this.userRepository.findOne({
       where: {
         email: body.email
       }
     });
 
-    
+    if (user) {
+      const resetToken = randomBytes(32).toString('hex');
 
-    // логика посылания сообщения со ссылкой на форму  + отдельный метод для смены пароля
+      const tokenHash = createHash('sha256').update(resetToken).digest('hex');
 
-    return //НА ФРОНТЕ ПОКАЗАТЬ "если пользователь существует на указанный email выслана ссылка с формой для смены пароля"
+      const resetTokenEntity = this.passwordResetTokenRepository.create({
+        tokenHash,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 30 * 60 * 1000)
+      });
+
+      await this.passwordResetTokenRepository.save(resetTokenEntity);
+
+      await this.mailService.sendPasswordResetEmail(user.email, resetToken);
+    }
+
+    return {
+      message:
+        'If this email is registered, you will receive a password reset link.'
+    };
   }
 }

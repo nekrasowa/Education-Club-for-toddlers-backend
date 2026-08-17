@@ -4,13 +4,13 @@ import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { ForgotPassDto } from './dto/forgotPass.dto';
-import { MailService } from '../mail/mail.service';
+// import { MailService } from '../mail/mail.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly mailService: MailService
+    // private readonly mailService: MailService
   ) {}
 
   @Get()
@@ -29,12 +29,9 @@ export class AuthController {
   }
 
   @Post('forgot-pass')
-  updatePassword(@Body() body: ForgotPassDto) {
-    return this.authService.updatePassword(body);
+  forgotPassword(@Body() body: ForgotPassDto) {
+    return this.authService.forgotPassword(body);
   }
 
-  @Post('test-email')
-  sendTestEmail(@Body('email') email: string) {
-    return this.mailService.sendTestEmail(email);
-  }
+  
 }

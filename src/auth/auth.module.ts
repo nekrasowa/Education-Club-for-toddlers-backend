@@ -7,13 +7,14 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { MailModule } from '../mail/mail.module';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+import { PasswordResetToken } from './entities/reset-token.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 
 @Module({
   imports: [
     MailModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, PasswordResetToken]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
