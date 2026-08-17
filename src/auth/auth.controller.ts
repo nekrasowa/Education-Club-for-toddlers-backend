@@ -3,14 +3,19 @@ import { Post, Body } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
+import { ForgotPassDto } from './dto/forgotPass.dto';
+import { MailService } from '../mail/mail.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly mailService: MailService
+  ) {}
 
   @Get()
   getUserList() {
-    return this.authService.getUserList()
+    return this.authService.getUserList();
   }
 
   @Post('login')
@@ -21,5 +26,15 @@ export class AuthController {
   @Post('register')
   register(@Body() body: RegisterDto) {
     return this.authService.register(body);
+  }
+
+  @Post('forgot-pass')
+  updatePassword(@Body() body: ForgotPassDto) {
+    return this.authService.updatePassword(body);
+  }
+
+  @Post('test-email')
+  sendTestEmail(@Body('email') email: string) {
+    return this.mailService.sendTestEmail(email);
   }
 }

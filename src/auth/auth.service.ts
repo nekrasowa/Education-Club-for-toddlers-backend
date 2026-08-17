@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 import { UserRole } from '../enums/user-role.enum';
 import * as bcrypt from 'bcrypt';
+import { ForgotPassDto } from './dto/forgotPass.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +37,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
+
     const isPasswordValid = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordValid) {
@@ -90,5 +92,19 @@ export class AuthService {
       },
       access_token
     };
+  }
+
+  async updatePassword(body: ForgotPassDto) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: body.email
+      }
+    });
+
+    
+
+    // логика посылания сообщения со ссылкой на форму  + отдельный метод для смены пароля
+
+    return //НА ФРОНТЕ ПОКАЗАТЬ "если пользователь существует на указанный email выслана ссылка с формой для смены пароля"
   }
 }

@@ -11,6 +11,7 @@ import { ProgramsModule } from './programs/programs.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TutorsModule } from './tutors/tutors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailService } from './mail/mail.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,9 +34,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true
     }),
     TutorsModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, MailService]
 })
 export class AppModule {}
