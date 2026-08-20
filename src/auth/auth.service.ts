@@ -1,6 +1,8 @@
 import {
   ConflictException,
+  HttpException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -15,6 +17,8 @@ import { ForgotPassDto } from './dto/forgotPass.dto';
 import { MailService } from '../mail/mail.service';
 import { createHash, randomBytes } from 'crypto';
 import { PasswordResetToken } from './entities/reset-token.entity';
+import { ChangePassDto } from './dto/changePass.dto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -128,5 +132,42 @@ export class AuthService {
       message:
         'If this email is registered, you will receive a password reset link.'
     };
+  }
+
+  async changePassword(body: ChangePassDto) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: body.email
+      }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const hashedPassword = await bcrypt.hash(body.newPassword, 10);
+
+    try {
+      const result = await this.userRepository.update(
+        { id: user.id },
+        { password: hashedPassword }
+      );
+
+      if (result.affected === 0) {
+        throw new InternalServerErrorException('Password could not be updated');
+      }
+
+      return {
+        message: 'Password was changed successfully'
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new InternalServerErrorException(
+        'Something went wrong while updating the password'
+      );
+    }
   }
 }
