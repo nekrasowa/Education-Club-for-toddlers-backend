@@ -6,12 +6,13 @@ import { BookModule } from './book/book.module';
 import { ClassListModule } from './class_list/class_list.module';
 import { ConfigModule } from '@nestjs/config';
 import { ContactModule } from './contact/contact.module';
+import { MailService } from './mail/mail.service';
 import { Module } from '@nestjs/common';
 import { ProgramsModule } from './programs/programs.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TutorsModule } from './tutors/tutors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MailService } from './mail/mail.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { MailService } from './mail/mail.service';
     }),
     TutorsModule,
     AuthModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService]

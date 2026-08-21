@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Review } from '../../reviews/entities/review.entity';
 import { UserRole } from '../../enums/user-role.enum';
 
 @Entity()
@@ -23,4 +25,7 @@ export class User {
 
   @Column()
   last_name!: string;
+
+  @OneToMany(() => Review, (review) => review.user_id)
+  reviews!: Review[];
 }

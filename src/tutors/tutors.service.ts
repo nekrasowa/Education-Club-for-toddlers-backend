@@ -1,25 +1,15 @@
-import {
-  Injectable,
-  Param,
-  ParseIntPipe,
-  Patch,
-  UseGuards,
-  Body,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { Tutor } from './entities/tutor.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../guards/roles.guard';
 
 @Injectable()
 export class TutorsService {
   constructor(
     @InjectRepository(Tutor)
-    private tutorRepository: Repository<Tutor>,
+    private tutorRepository: Repository<Tutor>
   ) {}
 
   createNewTutor(body: CreateTutorDto) {
@@ -35,12 +25,20 @@ export class TutorsService {
   findOne(id: number) {
     return this.tutorRepository.findOne({
       where: {
-        id,
-      },
+        id
+      }
     });
   }
 
-  update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateTutorDto) {
+  async update(id: number, body: UpdateTutorDto) {
+    const tutor = await this.tutorRepository.findOne({
+      where: { id }
+    });
+
+    if (!tutor) {
+      throw new NotFoundException('Tutor not found');
+    }
+
     return this.tutorRepository.update(id, body);
   }
 

@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import { TutorsService } from './tutors.service';
 import { CreateTutorDto } from './dto/create-tutor.dto';
@@ -19,7 +19,7 @@ import { RolesGuard } from '../guards/roles.guard';
 @Controller('tutors')
 export class TutorsController {
   constructor(private readonly tutorsService: TutorsService) {}
-  
+
   @Roles('admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()

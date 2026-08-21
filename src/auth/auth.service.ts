@@ -83,7 +83,8 @@ export class AuthService {
       password: hashedPassword,
       role: UserRole.PARENT,
       first_name: body.first_name,
-      last_name: body.last_name
+      last_name: body.last_name,
+      reviews: []
     });
     const savedUser = await this.userRepository.save(newUser);
 
