@@ -13,6 +13,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { TutorsModule } from './tutors/tutors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChildrenModule } from './children/children.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,6 +38,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TutorsModule,
     AuthModule,
     ReviewsModule,
+    ChildrenModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService]
